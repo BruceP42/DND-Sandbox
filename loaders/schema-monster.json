@@ -1,0 +1,195 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DnD Monster",
+  "type": "object",
+  "required": [
+    "name",
+    "size",
+    "type",
+    "alignment",
+    "ac",
+    "hp",
+    "hit_dice",
+    "str",
+    "dex",
+    "con",
+    "int",
+    "wis",
+    "cha",
+    "cr",
+    "sources",
+    "traits",
+    "actions",
+    "legendary_actions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": { "type": "string" },
+    "size": { "type": "string" },
+    "type": { "type": "string" },
+    "subtype": { "type": ["string", "null"] },
+    "alignment": { "type": "string" },
+    "ac": { "type": "number" },
+    "armor_type": { "type": ["string", "null"] },
+    "hp": { "type": "number" },
+    "hit_dice": { "type": "string" },
+    "speed": {
+      "type": "object",
+      "properties": {
+        "walk": { "type": ["string", "null"] },
+        "fly": { "type": ["string", "null"] },
+        "swim": { "type": ["string", "null"] },
+        "burrow": { "type": ["string", "null"] },
+        "climb": { "type": ["string", "null"] },
+        "hover": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "str": { "type": "number" },
+    "dex": { "type": "number" },
+    "con": { "type": "number" },
+    "int": { "type": "number" },
+    "wis": { "type": "number" },
+    "cha": { "type": "number" },
+    "cr": { "type": "number" },
+
+    "saving_throws": { "type": ["string", "null", "object"] },
+    "skills": { "type": ["string", "null", "object"] },
+    "damage_vulnerabilities": { "type": ["array", "null"], "items": { "type": "string" } },
+    "damage_resistances": { "type": ["array", "null"], "items": { "type": "string" } },
+    "damage_immunities": { "type": ["array", "null"], "items": { "type": "string" } },
+    "condition_immunities": { "type": ["array", "null"], "items": { "type": "string" } },
+    "senses": {
+      "type": ["object", "null"],
+      "properties": {
+        "blindsight": { "type": ["string", "null"] },
+        "darkvision": { "type": ["string", "null"] },
+        "tremorsense": { "type": ["string", "null"] },
+        "truesight": { "type": ["string", "null"] },
+        "passive_perception": { "type": ["number", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "languages": { "type": ["array", "null"], "items": { "type": "string" } },
+
+    "traits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "desc"],
+        "additionalProperties": true,
+        "properties": {
+          "name": { "type": "string" },
+          "desc": { "type": ["string", "array"] }
+        }
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "desc"],
+        "additionalProperties": true,
+        "properties": {
+          "name": { "type": "string" },
+          "desc": { "type": ["string", "array"] }
+        }
+      }
+    },
+    "reactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "desc"],
+        "additionalProperties": true,
+        "properties": {
+          "name": { "type": "string" },
+          "desc": { "type": ["string", "array"] }
+        }
+      }
+    },
+    "bonus_actions": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "desc": {
+            "oneOf": [
+              { "type": "string" },
+              {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            ]
+          }
+        },
+        "required": ["name", "desc"],
+        "additionalProperties": false
+      }
+    },
+    "legendary_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "desc"],
+        "additionalProperties": true,
+        "properties": {
+          "name": { "type": "string" },
+          "desc": { "type": ["string", "array"] }
+        }
+      }
+    },
+    "special_abilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "desc"],
+        "additionalProperties": true,
+        "properties": {
+          "name": { "type": "string" },
+          "desc": { "type": ["string", "array"] }
+        }
+      }
+    },
+    "lair_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "desc"],
+        "additionalProperties": true,
+        "properties": {
+          "name": { "type": "string" },
+          "desc": { "type": ["string", "array"] }
+        }
+      }
+    },
+    "regional_effects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "desc"],
+        "additionalProperties": true,
+        "properties": {
+          "name": { "type": "string" },
+          "desc": { "type": ["string", "array"] }
+        }
+      }
+    },
+
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "page"],
+        "additionalProperties": false,
+        "properties": {
+          "source": { "type": "string" },
+          "page": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "id": { "type": ["string", "null"] },
+    "xp": { "type": ["number", "null"] }
+  }
+}

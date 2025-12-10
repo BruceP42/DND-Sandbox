@@ -1,0 +1,143 @@
+{
+  "title": "DnD Magic Item",
+  "type": "object",
+
+  "required": [
+    "id",
+    "name",
+    "magic_item_category",
+    "item_type",
+    "rarity",
+    "desc",
+    "sources"
+  ],
+
+  "additionalProperties": false,
+
+  "properties": {
+  "id": {
+    "type": "string",
+    "pattern": "^[a-z]+-[A-Za-z0-9]+-[0-9]+$"
+  },
+
+    "name": {
+      "type": "string"
+    },
+
+    "magic_item_category": {
+      "type": "string"
+    },
+
+    "item_type": {
+    "type": ["string", "null"]
+    },
+
+    "rarity": {
+      "type": "string"
+    },
+
+    "attunement": {
+      "type": ["boolean", "null"]
+    },
+
+    "attunement_restrictions": {
+      "type": ["array", "null"],
+      "items": { "type": "string" }
+    },
+
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "page"],
+        "properties": {
+          "source": { "type": "string" },
+          "page": { "type": ["string", "number", "null"] }
+        },
+        "additionalProperties": false
+      }
+    },
+
+    "desc": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+
+    "properties": {
+      "type": ["object", "null"]
+    },
+
+    "charges": {
+      "type": ["number", "null"]
+    },
+
+    "recharge": {
+      "type": ["string", "null"]
+    },
+
+    "damage": {
+      "type": ["string", "null"]
+    },
+
+    "ac": {
+      "type": ["number", "null"]
+    },
+
+    "armor_type": {
+      "type": ["string", "null"]
+    },
+
+    "stealth_disadvantage": {
+      "type": ["boolean", "null"]
+    },
+
+    "weight": {
+      "type": ["number", "string", "null"]
+    },
+
+    "cost": {
+      "type": ["string", "null"]
+    },
+
+    "requires_proficiency": {
+      "type": ["boolean", "null"]
+    },
+
+    "modifiers": {
+      "type": ["object", "null"]
+    },
+
+    "spell_list": {
+      "type": ["array", "null"],
+      "items": { "type": "string" }
+    },
+
+    "charges_per_spell": {
+      "type": ["object", "null"]
+    },
+
+    "activation": {
+      "type": ["string", "null"]
+    },
+
+    "duration": {
+      "type": ["string", "null"]
+    },
+
+    "range": {
+      "type": ["string", "null"]
+    },
+
+    "uses": {
+      "type": ["string", "null"]
+    },
+
+    "replenish": {
+      "type": ["string", "null"]
+    },
+
+    "notes": {
+      "type": ["string", "null"]
+    }
+  }
+}

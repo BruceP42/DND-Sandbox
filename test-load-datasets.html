@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+  <meta charset="UTF-8">
+  <title>Sandbox Dataset Test</title>
+  <script src="loaders/helpers.js"></script>
+  <script src="loaders/dataset-loader.js"></script>
+  <script src="data/spells-SRD.js"></script>
+  <script src="data/spells-custom.js"></script>
+  <script src="data/magic-items-SRD.js"></script>
+  <script src="data/magic-items-custom.js"></script>
+  <script src="data/monsters-SRD.js"></script>
+  <script src="data/monsters-custom.js"></script>
+</head>
+<body>
+  <h1>Sandbox Dataset Test</h1>
+  <pre id="output"></pre>
+
+  <script>
+    const out = document.getElementById("output");
+
+    function log(msg) {
+      console.log(msg);
+      out.textContent += msg + "\n";
+    }
+
+    try {
+      log("=== Testing Spells ===");
+      if (typeof jsonSpells === "undefined") {
+        log("ERROR: jsonSpells not found!");
+      } else {
+        log(`jsonSpells length: ${jsonSpells.length}`);
+      }
+
+      if (typeof SpellsCustom === "undefined") {
+        log("ERROR: SpellsCustom not found!");
+      } else {
+        log(`SpellsCustom length: ${SpellsCustom.length}`);
+      }
+
+      const spells = loadSpells();
+      log(`loadSpells() returned: ${spells.length} entries`);
+
+      log("\n=== Testing Magic Items ===");
+      if (typeof jsonMagicItems === "undefined") {
+        log("ERROR: jsonMagicItems not found!");
+      } else {
+        log(`jsonMagicItems length: ${jsonMagicItems.length}`);
+      }
+
+      if (typeof MagicItemsCustom === "undefined") {
+        log("ERROR: MagicItemsCustom not found!");
+      } else {
+        log(`MagicItemsCustom length: ${MagicItemsCustom.length}`);
+      }
+
+      const items = loadMagicItems();
+      log(`loadMagicItems() returned: ${items.length} entries`);
+
+      log("\n=== Testing Monsters ===");
+      if (typeof jsonMonsters === "undefined") {
+        log("ERROR: jsonMonsters not found!");
+      } else {
+        log(`jsonMonsters length: ${jsonMonsters.length}`);
+      }
+
+      if (typeof MonstersCustom === "undefined") {
+        log("ERROR: MonstersCustom not found!");
+      } else {
+        log(`MonstersCustom length: ${MonstersCustom.length}`);
+      }
+
+      const monsters = loadMonsters();
+      log(`loadMonsters() returned: ${monsters.length} entries`);
+
+      log("\n=== Test Complete ===");
+
+    } catch (err) {
+      log("Exception during test: " + err.message);
+      console.error(err);
+    }
+  </script>
+</body>
+</html>

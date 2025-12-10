@@ -1,0 +1,84 @@
+{
+  "title": "DnD Spell",
+  "type": "object",
+
+  "required": [
+    "id",
+    "name",
+    "level",
+    "school",
+    "casting_time",
+    "range",
+    "components",
+    "duration",
+    "desc",
+    "classes",
+    "sources"
+  ],
+
+  "additionalProperties": false,
+
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z]+-[A-Za-z0-9]+-[0-9]+$"
+    },
+
+    "name": { "type": "string" },
+
+    "level": { "type": "number", "minimum": 0 },
+
+    "school": { "type": "string" },
+
+    "casting_time": { "type": "string" },
+
+    "range": { "type": ["string", "null"] },
+
+    "components": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["V","S","M"] },
+      "minItems": 1
+    },
+
+    "material": { "type": ["string", "null"] },
+
+    "duration": { "type": "string" },
+
+    "concentration": { "type": "boolean" },
+
+    "ritual": { "type": "boolean" },
+
+    "desc": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+
+    "higher_level": {
+      "type": ["array","null"],
+      "items": { "type": "string" }
+    },
+
+    "classes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+
+    "subclasses": {
+      "type": ["array","null"],
+      "items": { "type": "string" }
+    },
+
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source","page"],
+        "properties": {
+          "source": { "type": "string" },
+          "page": { "type": ["string","number","null"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
