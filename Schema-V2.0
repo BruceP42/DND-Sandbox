@@ -1,0 +1,358 @@
+saved as Schema-V2.0.jsonc on 2025-12-15 prior to changing from oneOf logic to if then else logic based on the "type" field with ID as fall back.
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "D&D Unified Dataset Schema v1.0",
+  "type": "object",
+
+  "oneOf": [
+    { "$ref": "#/$defs/spell" },
+    { "$ref": "#/$defs/monster" },
+    { "$ref": "#/$defs/magicItem" }
+  ],
+
+  "$defs": {
+    /* -------------------------------------------------------------
+       SHARED METADATA
+    ------------------------------------------------------------- */
+    "metadata": {
+      "type": "object",
+      "required": ["id", "sources"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["source", "page"],
+            "properties": {
+              "source": { "type": "string" },
+              "page": { "type": "string" }
+            }
+          }
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    /* -------------------------------------------------------------
+       SPELLS
+    ------------------------------------------------------------- */
+    "spell": {
+      "type": "object",
+      "required": [
+        "type",
+        "id",
+        "sources",
+        "name",
+        "level",
+        "school",
+        "casting_time",
+        "range",
+        "components",
+        "duration",
+        "concentration",
+        "ritual",
+        "spell_desc",
+        "classes"
+      ],
+
+      "properties": {
+        "type": { "const": "spell" },
+
+        "$ref:meta": { "$ref": "#/$defs/metadata" },
+
+        "name": { "type": "string" },
+        "level": { "type": "integer", "minimum": 0, "maximum": 9 },
+        "school": { "type": "string" },
+        "casting_time": { "type": "string" },
+        "range": { "type": "string" },
+        "components": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "material": { "type": "string" },
+        "duration": { "type": "string" },
+        "concentration": { "type": "boolean" },
+        "ritual": { "type": "boolean" },
+        "spell_desc": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "higher_level": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "classes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+
+        "damage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["damage_type", "damage_dice"],
+            "properties": {
+              "damage_type": { "type": "string" },
+              "damage_dice": { "type": "string" },
+              "scaling": { "type": "string" },
+              "dc": {
+                "type": "object",
+                "properties": {
+                  "dc_type": { "type": "string" },
+                  "dc_value": { "type": "integer" },
+                  "success_type": { "type": "string" }
+                },
+                "required": ["dc_type", "dc_value", "success_type"],
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+
+      "allOf": [
+        { "$ref": "#/$defs/metadata" },
+        {
+          "if": {
+            "properties": {
+              "components": {
+                "contains": { "const": "M" }
+              }
+            }
+          },
+          "then": {
+            "required": ["material"]
+          }
+        }
+      ],
+
+      "additionalProperties": false
+    },
+
+    /* -------------------------------------------------------------
+       MONSTERS
+    ------------------------------------------------------------- */
+    "monster": {
+      "type": "object",
+      "required": [
+        "type",
+        "id",
+        "sources",
+        "name",
+        "creature_type",
+        "size",
+        "alignment",
+        "ac",
+        "hp",
+        "hit_dice",
+        "speed",
+        "stats",
+        "cr"
+      ],
+
+      "properties": {
+        "type": { "const": "monster" },
+
+        "$ref:meta": { "$ref": "#/$defs/metadata" },
+
+        "name": { "type": "string" },
+        "creature_type": { "type": "string" },
+        "subtype": { "type": "string" },
+        "size": { "type": "string" },
+        "alignment": { "type": "string" },
+        "ac": { "type": "integer" },
+        "armor_type": { "type": "string" },
+        "hp": { "type": "integer" },
+        "hit_dice": { "type": "string" },
+
+        "speed": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+
+        "stats": {
+          "type": "object",
+          "required": ["str", "dex", "con", "int", "wis", "cha"],
+          "properties": {
+            "str": { "type": "integer" },
+            "dex": { "type": "integer" },
+            "con": { "type": "integer" },
+            "int": { "type": "integer" },
+            "wis": { "type": "integer" },
+            "cha": { "type": "integer" }
+          },
+          "additionalProperties": false
+        },
+
+        "saving_throws": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+
+        "skills": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+
+        "damage_vulnerabilities": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "damage_resistances": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "damage_immunities": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "condition_immunities": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+
+        "senses": {
+          "type": "object",
+          "additionalProperties": { "type": ["string", "number"] }
+        },
+
+        "languages": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+
+        "cr": { "type": "number" },
+
+        "traits": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/monsterAction" }
+        },
+        "actions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/monsterAction" }
+        },
+        "legendary_actions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/monsterAction" }
+        },
+        "reactions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/monsterAction" }
+        },
+        "lair_actions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/monsterAction" }
+        },
+        "regional_effects": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/monsterAction" }
+        }
+      },
+
+      "allOf": [
+        { "$ref": "#/$defs/metadata" }
+      ],
+
+      "additionalProperties": false
+    },
+
+    "monsterAction": {
+      "type": "object",
+      "required": ["name", "desc"],
+      "properties": {
+        "name": { "type": "string" },
+        "desc": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "attack_bonus": { "type": "integer" },
+        "damage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["damage_type", "damage_dice"],
+            "properties": {
+              "damage_type": { "type": "string" },
+              "damage_dice": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "usage": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "dc": {
+          "type": "object",
+          "properties": {
+            "dc_type": { "type": "string" },
+            "dc_value": { "type": "integer" },
+            "success_type": { "type": "string" }
+          }
+        },
+        "multiattack_type": { "type": "string" },
+        "actions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    /* -------------------------------------------------------------
+       MAGIC ITEMS
+    ------------------------------------------------------------- */
+    "magicItem": {
+      "type": "object",
+      "required": [
+        "type",
+        "id",
+        "sources",
+        "name",
+        "magic_item_category",
+        "rarity",
+        "item_desc"
+      ],
+
+      "properties": {
+        "type": { "const": "magic-item" },
+
+        "$ref:meta": { "$ref": "#/$defs/metadata" },
+
+        "name": { "type": "string" },
+        "magic_item_category": { "type": "string" },
+        "magic_item_type": { "type": "string" },
+        "rarity": { "type": "string" },
+        "attunement": { "type": "boolean" },
+        "attunement_restrictions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "properties": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "bonus": { "type": "string" },
+        "item_desc": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+
+      "allOf": [
+        { "$ref": "#/$defs/metadata" }
+      ],
+
+      "additionalProperties": false
+    }
+  }
+}

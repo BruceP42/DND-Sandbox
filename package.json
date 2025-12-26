@@ -1,0 +1,12 @@
+{
+  "name": "dnd-sandbox",
+  "version": "1.0.0",
+  "description": "D&D SRD + custom dataset sandbox",
+  "main": "validate-schema.js",
+  "type": "module",
+  "scripts": {
+    "validate": "node validate-schema.js"
+  },
+  "author": "Bruce Pilcher",
+  "license": "ISC"
+}

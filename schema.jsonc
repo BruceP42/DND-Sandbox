@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/dnd-unified-schema-v2.0.json",
+  "title": "Unified D&D Dataset Schema",
+  "description": "Unified schema for spells, monsters, and magic items",
+
+  "type": "object",
+
+  /* =============================================================
+     ROUTING LOGIC
+     ============================================================= */
+
+  "allOf": [
+    {
+      /* ---------- SPELL (by type) ---------- */
+      "if": {
+        "properties": {
+          "metadata": {
+            "properties": {
+              "type": { "const": "spell" }
+            },
+            "required": ["type"]
+          }
+        },
+        "required": ["metadata"]
+      },
+      "then": { "$ref": "#/$defs/spell" },
+
+      "else": {
+        /* ---------- MONSTER (by type) ---------- */
+        "if": {
+          "properties": {
+            "metadata": {
+              "properties": {
+                "type": { "const": "monster" }
+              },
+              "required": ["type"]
+            }
+          },
+          "required": ["metadata"]
+        },
+        "then": { "$ref": "#/$defs/monster" },
+
+        "else": {
+          /* ---------- MAGIC ITEM (by type) ---------- */
+          "if": {
+            "properties": {
+              "metadata": {
+                "properties": {
+                  "type": { "const": "magic-item" }
+                },
+                "required": ["type"]
+              }
+            },
+            "required": ["metadata"]
+          },
+          "then": { "$ref": "#/$defs/magic_item" },
+
+          "else": {
+            /* ---------- SPELL (by id prefix) ---------- */
+            "if": {
+              "properties": {
+                "metadata": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^sp"
+                    }
+                  },
+                  "required": ["id"]
+                }
+              },
+              "required": ["metadata"]
+            },
+            "then": { "$ref": "#/$defs/spell" },
+
+            "else": {
+              /* ---------- MONSTER (by id prefix) ---------- */
+              "if": {
+                "properties": {
+                  "metadata": {
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^mo"
+                      }
+                    },
+                    "required": ["id"]
+                  }
+                },
+                "required": ["metadata"]
+              },
+              "then": { "$ref": "#/$defs/monster" },
+
+              "else": {
+                /* ---------- MAGIC ITEM (by id prefix) ---------- */
+                "if": {
+                  "properties": {
+                    "metadata": {
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "pattern": "^mi"
+                        }
+                      },
+                      "required": ["id"]
+                    }
+                  },
+                  "required": ["metadata"]
+                },
+                "then": { "$ref": "#/$defs/magic_item" }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+
+  /* =============================================================
+     DEFINITIONS
+     ============================================================= */
+
+  "$defs": {
+    /* -----------------------------------------------------------
+       SOURCE REFERENCE
+       ----------------------------------------------------------- */
+    "source_ref": {
+      "type": "object",
+      "properties": {
+        "source": { "type": "string", "minLength": 1 },
+        "page": { "type": ["integer", "null"], "minimum": 1 }
+      },
+      "required": ["source", "page"],
+      "additionalProperties": false
+    },
+
+    /* -----------------------------------------------------------
+       SHARED METADATA
+       ----------------------------------------------------------- */
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "minLength": 1 },
+        "type": {
+          "type": "string",
+          "enum": ["spell", "monster", "magic-item"]
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/source_ref" }
+        }
+      },
+      "required": ["id", "name", "sources"],
+      "additionalProperties": false
+    },
+
+    /* -----------------------------------------------------------
+       SPELL
+       ----------------------------------------------------------- */
+    "spell": {
+      "type": "object",
+      "allOf": [{ "$ref": "#/$defs/metadata" }],
+      "properties": {
+        "level": { "type": "integer", "minimum": 0 },
+        "school": { "type": "string" },
+        "casting_time": { "type": "string" },
+        "range": { "type": "string" },
+        "components": {
+          "type": "object",
+          "properties": {
+            "V": { "type": "boolean" },
+            "S": { "type": "boolean" },
+            "M": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        },
+        "material": { "type": ["string", "null"] },
+        "duration": { "type": "string" },
+        "concentration": { "type": "boolean" },
+        "ritual": { "type": "boolean" },
+        "desc": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "higher_level": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "classes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": [
+        "level",
+        "school",
+        "casting_time",
+        "range",
+        "components",
+        "duration",
+        "desc"
+      ],
+      "unevaluatedProperties": false
+    },
+
+    /* -----------------------------------------------------------
+       MONSTER
+       ----------------------------------------------------------- */
+    "monster": {
+      "type": "object",
+      "allOf": [{ "$ref": "#/$defs/metadata" }],
+      "properties": {
+        "size": { "type": "string" },
+        "alignment": { "type": "string" },
+        "armor_class": { "type": "integer" },
+        "hp": { "type": "integer" },
+        "damage_dice": { "type": "string" },
+        "speed": { "type": "object" },
+        "strength": { "type": "integer" },
+        "dexterity": { "type": "integer" },
+        "constitution": { "type": "integer" },
+        "intelligence": { "type": "integer" },
+        "wisdom": { "type": "integer" },
+        "charisma": { "type": "integer" },
+        "challenge_rating": { "type": ["string", "number"] },
+        "actions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/monster_action" }
+        }
+      },
+      "required": ["size", "alignment", "armor_class", "hp", "speed"],
+      "unevaluatedProperties": false
+    },
+
+    "monster_action": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "desc": { "type": "string" }
+      },
+      "required": ["name", "desc"],
+      "unevaluatedProperties": false
+    },
+
+    /* -----------------------------------------------------------
+       MAGIC ITEM
+       ----------------------------------------------------------- */
+    "magic_item": {
+      "type": "object",
+      "allOf": [{ "$ref": "#/$defs/metadata" }],
+      "properties": {
+        "magic_item_category": { "type": "string" },
+        "item_type": { "type": ["string", "null"] },
+        "rarity": { "type": "string" },
+        "attunement": { "type": "boolean" },
+        "attunement_restrictions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "desc": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": [
+        "magic_item_category",
+        "rarity",
+        "attunement",
+        "desc"
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

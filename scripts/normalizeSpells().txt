@@ -1,0 +1,151 @@
+/**
+ * Normalize legacy spell dataset entries to Schema v1.0
+ *
+ * Input:
+ *   Array of legacy spell objects (from spells.js, spells-custom.js, etc.)
+ *
+ * Output:
+ *   Array of normalized spell objects
+ *   - Schema v1.0 compliant
+ *   - Safe for AJV validation
+ *   - Does NOT overwrite original data
+ */
+export function normalizeSpells(legacySpells) {
+  if (!Array.isArray(legacySpells)) {
+    throw new Error("normalizeSpells expects an array");
+  }
+
+  return legacySpells.map((spell, index) => {
+    if (!spell || typeof spell !== "object") {
+      throw new Error(`Invalid spell entry at index ${index}`);
+    }
+
+    /* ---------------------------------------------------------
+       REQUIRED FIELD ASSERTIONS (fail fast, explicit)
+    --------------------------------------------------------- */
+    const requiredLegacyFields = [
+      "id",
+      "name",
+      "level",
+      "school",
+      "casting_time",
+      "range",
+      "components",
+      "duration",
+      "concentration",
+      "ritual",
+      "desc",
+      "classes",
+      "sources"
+    ];
+
+    for (const field of requiredLegacyFields) {
+      if (!(field in spell)) {
+        throw new Error(
+          `Spell ${spell.name ?? `[index ${index}]`} missing required field: ${field}`
+        );
+      }
+    }
+
+    /* ---------------------------------------------------------
+       METADATA NORMALIZATION
+    --------------------------------------------------------- */
+    const sources = spell.sources.map((src, srcIndex) => {
+      if (!src || typeof src !== "object") {
+        throw new Error(
+          `Spell ${spell.name} has invalid source at index ${srcIndex}`
+        );
+      }
+
+      return {
+        source: String(src.source ?? ""),
+        page:
+          src.page === null || src.page === undefined
+            ? ""
+            : String(src.page)
+      };
+    });
+
+    /* ---------------------------------------------------------
+       COMPONENTS / MATERIAL RULE
+    --------------------------------------------------------- */
+    const components = Array.isArray(spell.components)
+      ? spell.components.map(String)
+      : [];
+
+    const hasMaterialComponent = components.includes("M");
+
+    const material =
+      hasMaterialComponent
+        ? String(spell.material ?? "")
+        : undefined;
+
+    /* ---------------------------------------------------------
+       DAMAGE (OPTIONAL, STRUCTURAL COPY ONLY)
+    --------------------------------------------------------- */
+    let damage;
+    if (Array.isArray(spell.damage)) {
+      damage = spell.damage.map(dmg => {
+        const out = {
+          damage_type: String(dmg.damage_type),
+          damage_dice: String(dmg.damage_dice)
+        };
+
+        if (dmg.scaling) {
+          out.scaling = String(dmg.scaling);
+        }
+
+        if (dmg.dc) {
+          out.dc = {
+            dc_type: String(dmg.dc.dc_type),
+            dc_value: Number(dmg.dc.dc_value),
+            success_type: String(dmg.dc.success_type)
+          };
+        }
+
+        return out;
+      });
+    }
+
+    /* ---------------------------------------------------------
+       FINAL NORMALIZED SPELL
+    --------------------------------------------------------- */
+    const normalizedSpell = {
+      type: "spell",
+
+      id: String(spell.id),
+
+      name: String(spell.name),
+      level: Number(spell.level),
+      school: String(spell.school),
+
+      casting_time: String(spell.casting_time),
+      range: String(spell.range),
+
+      components,
+      ...(hasMaterialComponent ? { material } : {}),
+
+      duration: String(spell.duration),
+      concentration: Boolean(spell.concentration),
+      ritual: Boolean(spell.ritual),
+
+      spell_desc: Array.isArray(spell.desc)
+        ? spell.desc.map(String)
+        : [],
+
+      higher_level: Array.isArray(spell.higher_level)
+        ? spell.higher_level.map(String)
+        : [],
+
+      classes: Array.isArray(spell.classes)
+        ? spell.classes.map(String)
+        : [],
+
+      ...(damage ? { damage } : {}),
+
+      sources
+    };
+
+    return normalizedSpell;
+  });
+}
