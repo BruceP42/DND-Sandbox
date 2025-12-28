@@ -1,0 +1,6 @@
+Spells SRD: 319
+Spells Custom: 1
+Monsters SRD: 334
+Monsters Custom: 4
+Magic Items SRD: 362
+Magic Items Custom: 6

@@ -1,0 +1,123 @@
+var MagicItemsCustom = [
+  {
+    "name": "Ring of Impeccable Grooming",
+    "magic_item_category": "Ring",
+    "item_type": null,
+    "rarity": "Common",
+    "desc": [
+      "This slim silver band is set with a cluster of four small tourmalines. While wearing this item, you can use an action to pass your hand over your face, which is immediately cleansed and applied with appropriate makeup. In addition, your hair (including facial hair) becomes washed and trimmed."
+    ],
+    "sources": [
+      {
+        "source": "MT Black EoW",
+        "page": "101"
+      }
+    ],
+    "id": "mi-EoW-1362"
+  },
+
+  {
+    "name": "Rod of Mercy",
+    "magic_item_category": "Rod",
+    "item_type": null,
+    "rarity": "Common",
+    "desc": [
+      "This short piece of oiled ash has a polished piece of jet set in the tip. While holding this item, you can use your action to touch a living creature that has 0 hit points. The creature becomes stable. This item has no effect on undead or constructs. Once used, it cannot be used again until the next dawn."
+    ],
+    "sources": [
+      {
+        "source": "M.T. Black's Emporium of Wonders",
+        "page": "114"
+      }
+    ],
+    "id": "mi-EoW-2018"
+  },
+
+  {
+    "name": "Rod of Remarkable Gifts",
+    "magic_item_category": "Rod",
+    "item_type": null,
+    "rarity": "Very Rare",
+    "attunement": true,
+    "desc": [
+      "This slender ivory rod has a spiralling crimson stripe painted down its length. It has 3 charges and regains 1 charge daily at dawn.",
+      "If the rod is reduced to 0 charges, roll a d20. On a 1, the rod shatters."
+    ],
+    "sources": [
+      {
+        "source": "M.T. Black's Emporium of Wonders",
+        "page": "114"
+      }
+    ],
+    "id": "mi-EoW-2019"
+  },
+
+  {
+    "name": "Rod of Spell Deflection",
+    "magic_item_category": "Rod",
+    "item_type": null,
+    "rarity": "Very Rare",
+    "attunement": true,
+    "desc": [
+      "This octagonal rod is made of translucent blue crystal.",
+      "While holding it, if you succeed on a saving throw against any spell that targets only you (not an area of effect) and the spell is 6th level or lower, the spell has no effect on you, and you deflect it.",
+      "You may use a reaction to target one creature within 30 feet of you with the deflected spell, using the slot level, spell save DC, attack bonus, and spellcasting ability of the caster."
+    ],
+    "sources": [
+      {
+        "source": "M.T. Black's Emporium of Wonders",
+        "page": "116"
+      }
+    ],
+    "id": "mi-EoW-2020"
+  },
+
+  {
+    "name": "Shield Guardian Amulet",
+    "magic_item_category": "Wondrous Item",
+    "item_type": null,
+    "rarity": "Rare",
+    "attunement": true,
+    "desc": [
+      "The amulet is a 4-inch-wide disk composed of silver-framed wood, with a rune carved into its face. A detect magic spell reveals a magical aura of enchantment around the amulet.",
+      "Every shield guardian has an amulet magically linked to it. A shield guardian can have only one corresponding amulet, and if that amulet is destroyed, the shield guardian is incapacitated until a replacement amulet is created.",
+      "A shield guardian's amulet is subject to direct attack if it isn't being worn or carried. It has AC 10, 10 hit points, and immunity to poison and psychic damage. Crafting an amulet requires 1 week and costs 1,000 gp in components.",
+      "A shield guardian's solitary focus is to protect the amulet's wearer. The amulet's wearer can command the guardian to attack its enemies or to guard the wielder against attack. If an attack threatens to injure the wearer, the construct can magically absorb the blow into its own body, even at a distance.",
+      "A humanoid that attunes to this amulet knows the distance and direction of the shield guardian, provided the amulet and the guardian are on the same plane of existence.",
+      "As an action, the amulet's attuned wearer can try to reactivate the shield guardian with a successful DC 20 Intelligence (Arcana) check. Reactivation can only be attempted while the amulet and guardian are within 10 feet of each other.",
+      "Requires attunement by a humanoid."
+    ],
+    "sources": [
+      {
+        "source": "IDRotF",
+        "page": "149"
+      }
+    ],
+    "id": "mi-IDRotF-2021"
+  },
+
+  {
+    "name": "Blood Shard",
+    "magic_item_category": "Wondrous Item",
+    "item_type": null,
+    "rarity": "Rare",
+    "attunement": true,
+    "desc": [
+      "This ruby is infused with an ancient vampire’s blood.",
+      "As an action while holding it, you can transform the ruby into a magical weapon of any type that deals an additional 1d10 necrotic damage on a hit. When you do so, your hit point maximum is reduced by 1d10 until you finish a long rest (this effect can’t be negated or reduced).",
+      "In addition, you can choose that the weapon has one or more of the properties below; for each property you choose, your hit point maximum is reduced by an additional 1d10:",
+      "• Bloodthirsty: Attack rolls made with the weapon are made with advantage against any creature that doesn’t have all its hit points.",
+      "• Essence Thief: When you hit a creature using this weapon, you gain temporary hit points equal to the amount of necrotic damage dealt by the attack.",
+      "• Life’s Bane: When you hit a creature using this weapon, the creature cannot regain hit points until the start of your next turn.",
+      "The ruby returns to its original form after 1 hour.",
+      "A sample item from Wanderer's Guide to Enchanted Emporiums by EventyrGames."
+    ],
+    "sources": [
+      {
+        "source": "Wanderer's Guide to Enchanted Emporiums",
+        "page": ""
+      }
+    ],
+    "id": "mi-WGtEE-2025"
+  }
+];

@@ -1,0 +1,14 @@
+{
+  "spells": {
+    "srd": 324,
+    "custom": 47
+  },
+  "monsters": {
+    "srd": 203,
+    "custom": 12
+  },
+  "magic-items": {
+    "srd": 99,
+    "custom": 16
+  }
+}
