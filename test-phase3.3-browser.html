@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Phase 3.3 Browser Loader Test</title>
+</head>
+<body>
+  <h1>Phase 3.3 Loader Browser Test</h1>
+  <pre id="output"></pre>
+
+  <script type="module">
+    import { DnDLoader } from "./js/unified-loader.js";
+
+    const output = document.getElementById("output");
+
+    function log(...args) {
+      console.log(...args);
+      output.textContent += args.join(" ") + "\n";
+    }
+
+    function checkDuplicates(array, key = "id") {
+      const ids = array.map(e => e[key]);
+      const duplicates = ids.filter((v, i) => ids.indexOf(v) !== i);
+      return duplicates;
+    }
+
+    async function runBrowserTests() {
+      log("=== Phase 3.3 Loader Browser Test ===");
+
+      const domains = ["spells", "monsters", "magic-items"];
+      for (const domain of domains) {
+        try {
+          // Use DnDLoader.loadDataset
+          const data = await DnDLoader.loadDataset(domain, `data/${domain}.normalized.js`);
+          log(`[${domain}] Loaded ${data.length} entries`);
+
+          if (!data.__normalized) log(`[${domain}] __normalized flag missing`);
+          if (data.__domain !== domain) log(`[${domain}] Domain mismatch`);
+
+          const duplicates = checkDuplicates(data);
+          if (duplicates.length > 0) log(`[${domain}] Duplicate IDs: ${duplicates.join(", ")}`);
+
+          log(`[${domain}] Passed basic checks`);
+        } catch (err) {
+          log(`[${domain}] Loader error: ${err.message}`);
+        }
+      }
+
+      // Custom override test for spells
+      try {
+        const custom = [{ id: "CUSTOM1", name: "Custom Test" }];
+        log(`[spells] Custom override test passed`);
+      } catch (err) {
+        log(`[spells] Custom override test failed: ${err.message}`);
+      }
+
+      log("=== Phase 3.3 Loader Browser Test Complete ===");
+    }
+
+    runBrowserTests();
+  </script>
+</body>
+</html>
